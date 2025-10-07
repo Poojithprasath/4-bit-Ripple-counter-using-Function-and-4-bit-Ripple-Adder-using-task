@@ -147,6 +147,7 @@ endmodule
 
 
 # Output Waveform 
+![WhatsApp Image 2025-10-07 at 11 19 15_01a0f841](https://github.com/user-attachments/assets/99b567c3-b667-4d54-a8f6-554c233ce8d2)
 
 
 # Conclusion
