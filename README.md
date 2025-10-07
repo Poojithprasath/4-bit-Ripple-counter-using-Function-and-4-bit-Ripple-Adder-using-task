@@ -108,14 +108,17 @@ module ripple_counter_func (
 );
 
     function [3:0] count;
-     ///
+        input [3:0] val;
+        begin
+            count = val + 1;
+        end
     endfunction
 
     always @(posedge clk or posedge rst) begin
         if (rst)
             Q <= 4'b0000;
         else
-            Q <= count(Q);  // use function to increment
+            Q <= count(Q);
     end
 endmodule
 ```
