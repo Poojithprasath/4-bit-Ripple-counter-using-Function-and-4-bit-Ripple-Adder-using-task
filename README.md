@@ -24,6 +24,7 @@ Capture screenshots of the waveform and save the simulation logs. These will be 
 # Verilog Code
 # 4 bit Ripple Adder using Task
 // 4-bit Ripple Carry Adder using Task
+```verilog
 module ripple_adder_task (
     input [3:0] A, B,
     input Cin,
@@ -50,11 +51,53 @@ module ripple_adder_task (
         Cout = c;
     end
 endmodule
-
+```
 
 # Test Bench
+```verilog
+module ripple_tb;
+reg [3:0] A, B;
+reg Cin;
+wire [3:0] Sum;
+wire Cout;
+
+ripple uut (
+.A(A),
+.B(B),
+.Cin(Cin),
+.Sum(Sum),
+.Cout(Cout)
+    );
+
+    initial begin
+        A = 4'b0000;
+        B = 4'b0000;
+        Cin = 0;
+        #10 
+        A = 4'b0011; 
+        B = 4'b0101; 
+        Cin = 0;
+        #10 
+        A = 4'b1111; 
+        B = 4'b0001; 
+        Cin = 1;
+        #10 
+        A = 4'b1010; 
+        B = 4'b0101; 
+        Cin = 0;
+        #10 
+        A = 4'b1111; 
+        B = 4'b1111; 
+        Cin = 0;
+        #10 
+        $finish;
+    end
+endmodule
+```
 
 # Output Waveform
+<img width="1920" height="700" alt="Screenshot 2025-10-03 163257" src="https://github.com/user-attachments/assets/149c837b-71d2-4f3c-97b5-5bb0ada97516" />
+
 
 # 4 bit Ripple counter using Function
 // 4-bit Ripple Counter using Function
