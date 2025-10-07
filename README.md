@@ -101,6 +101,7 @@ endmodule
 
 # 4 bit Ripple counter using Function
 // 4-bit Ripple Counter using Function
+```verilog
 module ripple_counter_func (
     input clk, rst,
     output reg [3:0] Q
@@ -117,8 +118,32 @@ module ripple_counter_func (
             Q <= count(Q);  // use function to increment
     end
 endmodule
+```
 
 # Test Bench
+```verilog
+module ripple_counter_func_tb;
+    reg clk_t, rst_t;
+    wire [3:0] Q_t;
+
+    ripple_counter_func uut (
+        .clk(clk_t),
+        .rst(rst_t),
+        .Q(Q_t)
+    );
+
+    initial clk_t = 0;
+    always #5 clk_t = ~clk_t;
+
+    initial begin
+        rst_t = 1;
+        #15 
+        rst_t = 0;
+        #100 
+        $finish;
+    end
+endmodule
+```
 
 
 # Output Waveform 
