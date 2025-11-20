@@ -25,74 +25,69 @@ Capture screenshots of the waveform and save the simulation logs. These will be 
 # 4 bit Ripple Adder using Task
 // 4-bit Ripple Carry Adder using Task
 ```verilog
+
+`timescale 1ns/1ps
+
 module ripple_adder_task (
     input [3:0] A, B,
     input Cin,
     output reg [3:0] Sum,
     output reg Cout
 );
-    reg c;
-    integer i;
 
-    task full_adder;
-        input a, b, cin;
-        output s, cout;
-        begin
-        ///
-        end
-    endtask
+reg c;
+integer i;
 
-    always @(*) 
+
+task full_adder;
+    input a, b, cin;
+    output s, cout;
     begin
-        c = Cin;
-        for (i = 0; i < 4; i = i + 1) begin
-            full_adder(A[i], B[i], c, Sum[i], c);
-        end
-        Cout = c;
+        s = a ^ b ^ cin;                   
+        cout = (a & b) | (b & cin) | (a & cin); 
     end
+endtask
+
+always @(*) begin
+    c = Cin;
+    for (i = 0; i < 4; i = i + 1) begin
+        full_adder(A[i], B[i], c, Sum[i], c);
+    end
+    Cout = c;
+end
+
 endmodule
 ```
 
 # Test Bench
 ```verilog
-module ripple_tb;
-reg [3:0] A, B;
-reg Cin;
-wire [3:0] Sum;
-wire Cout;
 
-ripple uut (
-.A(A),
-.B(B),
-.Cin(Cin),
-.Sum(Sum),
-.Cout(Cout)
-    );
+module tb_ripple_counter_func;
 
-    initial begin
-        A = 4'b0000;
-        B = 4'b0000;
-        Cin = 0;
-        #10 
-        A = 4'b0011; 
-        B = 4'b0101; 
-        Cin = 0;
-        #10 
-        A = 4'b1111; 
-        B = 4'b0001; 
-        Cin = 1;
-        #10 
-        A = 4'b1010; 
-        B = 4'b0101; 
-        Cin = 0;
-        #10 
-        A = 4'b1111; 
-        B = 4'b1111; 
-        Cin = 0;
-        #10 
-        $finish;
-    end
+reg clk, rst;
+wire [3:0] Q;
+
+
+ripple_counter_func uut (clk, rst, Q);
+
+
+always #5 clk = ~clk;
+
+initial begin
+    clk = 0;
+    rst = 1; #10;
+    rst = 0;
+
+    #100;  
+    $stop;
+end
+
+initial begin
+    $monitor("Time=%0t | Q=%b", $time, Q);
+end
+
 endmodule
+
 ```
 
 # Output Waveform
