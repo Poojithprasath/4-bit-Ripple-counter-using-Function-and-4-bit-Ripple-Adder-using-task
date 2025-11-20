@@ -62,30 +62,43 @@ endmodule
 # Test Bench
 ```verilog
 
-module tb_ripple_counter_func;
+module ripple_tb;
+reg [3:0] A, B;
+reg Cin;
+wire [3:0] Sum;
+wire Cout;
 
-reg clk, rst;
-wire [3:0] Q;
+ripple uut (
+.A(A),
+.B(B),
+.Cin(Cin),
+.Sum(Sum),
+.Cout(Cout)
+    );
 
-
-ripple_counter_func uut (clk, rst, Q);
-
-
-always #5 clk = ~clk;
-
-initial begin
-    clk = 0;
-    rst = 1; #10;
-    rst = 0;
-
-    #100;  
-    $stop;
-end
-
-initial begin
-    $monitor("Time=%0t | Q=%b", $time, Q);
-end
-
+    initial begin
+        A = 4'b0000;
+        B = 4'b0000;
+        Cin = 0;
+        #10 
+        A = 4'b0011; 
+        B = 4'b0101; 
+        Cin = 0;
+        #10 
+        A = 4'b1111; 
+        B = 4'b0001; 
+        Cin = 1;
+        #10 
+        A = 4'b1010; 
+        B = 4'b0101; 
+        Cin = 0;
+        #10 
+        A = 4'b1111; 
+        B = 4'b1111; 
+        Cin = 0;
+        #10 
+        $finish;
+    end
 endmodule
 
 ```
